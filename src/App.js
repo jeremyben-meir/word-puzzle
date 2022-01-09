@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Game from "./views/Game2"
+import * as Styles from "./assets/Styles";
 
 function App() {
   var randomWords = require('random-words');
@@ -16,10 +17,8 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div style={Styles.mainMainDiv}>
         <Game wordlen={wordlen} numtries={numtries} word={get_word(5)}/>
-      </header>
     </div>
   );
 }
