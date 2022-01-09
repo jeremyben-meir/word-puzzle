@@ -4,14 +4,10 @@ import React, { useState, useEffect } from "react";
 class Game extends React.Component {
     constructor(props){
         super(props);
-        console.log(this.props.word)
         this.detectKeypress = this.detectKeypress.bind(this);
         this.keyStroke = this.keyStroke.bind(this);
         this.selectLetter = this.selectLetter.bind(this);
-        // JSON.parse(localStorage.getItem('state')) ||
         this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
-        // localStorage.setItem('state', JSON.stringify(this.state))
-        console.log(this.state.word)
     }
 
     originalState(){
@@ -42,7 +38,6 @@ class Game extends React.Component {
         } else if (this.state.status=="fail"){
             localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins}))
         }
-        console.log("written")
     }
 
     componentDidMount(){
