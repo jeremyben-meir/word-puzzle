@@ -1,8 +1,10 @@
-export const gameColors = {
+export const gameSettings = {
     bkgnd: "#2c3e50",
     misplace: "#f1c40f",
     error: "#95a5a6",
-    correct: "#2ecc71"
+    correct: "#2ecc71",
+    bigBox: 50,
+    smallBox: 30
 }
 
 export const mainMainDiv = {
@@ -23,24 +25,24 @@ export const mainDivStyle = {
 ////////////////////
 
 export const boxStyle = {
-    width:50,
-    height:50,
+    width:gameSettings.bigBox,
+    height:gameSettings.bigBox,
     margin:"5px",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "8px",
-    border: "2px solid "+gameColors.bkgnd,
+    border: "2px solid "+gameSettings.bkgnd,
     textAlign:"center",
 } 
 
 export const keyStyle = {
-    width:35,
-    height:35,
-    margin: "5px",
+    width:gameSettings.smallBox,
+    height:gameSettings.smallBox,
+    margin: "3px",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "8px",
-    border: "2px solid "+gameColors.bkgnd,
+    border: "2px solid "+gameSettings.bkgnd,
     userSelect: "none",
 }
 
@@ -49,7 +51,7 @@ export const keyStyle = {
 export const wordStyle = {
     display: "flex",
     flexDirection: "row",
-    height:50,
+    height:gameSettings.bigBox,
     justifyContent: "center",
     margin: "5px",
 }
@@ -57,8 +59,9 @@ export const wordStyle = {
 export const subBankStyle = {
     display: "flex",
     flexDirection: "row",
-    height:50,
-    justifyContent:"center"
+    height:gameSettings.smallBox,
+    justifyContent:"center",
+    margin: "3px",
 }
 
 ////////////////////////
@@ -83,13 +86,13 @@ export const fontStyle = {
     userSelect: "none",
     top: "50%",
     transform: "translate(0, -50%)",
-    color: gameColors.bkgnd,
+    color: gameSettings.bkgnd,
 }
 export const keyFontStyle = {
     textAlign: "center",
-    fontSize: "large",
+    fontSize: "medium",
     userSelect: "none",
     top: "50%",
     transform: "translate(0, -50%)",
-    color: gameColors.bkgnd,
+    color: gameSettings.bkgnd,
 }

@@ -7,19 +7,23 @@ class Game extends React.Component {
         this.detectKeypress = this.detectKeypress.bind(this);
         this.keyStroke = this.keyStroke.bind(this);
         this.selectLetter = this.selectLetter.bind(this);
-        // JSON.parse(localStorage.getItem('state')) ||
-        this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
+        if (false){
+            this.state = this.originalState()
+            localStorage.setItem('state', JSON.stringify(this.state))
+        } else {
+            this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
+        }
         console.log(this.state.word)
-        // localStorage.setItem('state', JSON.stringify(this.state))
     }
 
     originalState(){
         var alphabet = {};
-        var splits = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'], ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[ 'Z', 'X', 'C', 'V', 'B', 'N', 'M']];
+        var splits = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'], ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],["BK", 'Z', 'X', 'C', 'V', 'B', 'N', 'M', "EN"]];
 
         for (var i = 65; i <= 90; i++){
             alphabet[String.fromCharCode(i)]="white"
         }
+
         return({
             wordgrid: [...Array(this.props.numtries)].map(e => [...Array(this.props.wordlen)].map(f => "")),
             stylegrid: [...Array(this.props.numtries)].map(e => [...Array(this.props.wordlen)].map(f => "white")),
@@ -57,9 +61,9 @@ class Game extends React.Component {
         var correctNum = 0
         for (var i = 0; i < tempstylegrid[this.state.yLoc].length; i++) {
             if (guess[i] == this.state.word[i]){
-                tempstylegrid[this.state.yLoc][i]=Styles.gameColors.correct
+                tempstylegrid[this.state.yLoc][i]=Styles.gameSettings.correct
                 tempword[i] = "";
-                tempalpha[guess[i]]=Styles.gameColors.correct
+                tempalpha[guess[i]]=Styles.gameSettings.correct
                 correctNum = correctNum + 1
             }
         }
@@ -74,14 +78,14 @@ class Game extends React.Component {
                 const index = tempword.indexOf(guess[i]);
                 if (tempstylegrid[this.state.yLoc][i]=="white"){
                     if (index > -1){
-                        tempstylegrid[this.state.yLoc][i]=Styles.gameColors.misplace
+                        tempstylegrid[this.state.yLoc][i]=Styles.gameSettings.misplace
                         tempword.splice(index, 1);
                         if (tempalpha[guess[i]]=="white")
-                            tempalpha[guess[i]]=Styles.gameColors.misplace
+                            tempalpha[guess[i]]=Styles.gameSettings.misplace
                     } else {
-                        tempstylegrid[this.state.yLoc][i]=Styles.gameColors.error
+                        tempstylegrid[this.state.yLoc][i]=Styles.gameSettings.error
                         if (tempalpha[guess[i]]=="white")
-                            tempalpha[guess[i]]=Styles.gameColors.error
+                            tempalpha[guess[i]]=Styles.gameSettings.error
                     }
                 }
             }
@@ -160,7 +164,15 @@ class Game extends React.Component {
 
     keyStroke = (letter,e) => {
         e.preventDefault();
-        // this.selectLetter(letter.charCodeAt(0))
+        var keyCode = 0
+        if (letter == "BK")
+            keyCode = 8;
+        else if (letter == "EN")
+            keyCode = 13;
+        else
+            keyCode = letter.charCodeAt(0)
+        
+        this.selectLetter(keyCode)
     }
 
     keyboard (letter,color,key){
