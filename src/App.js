@@ -1,22 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
+import Game from "./views/Game2"
 
 function App() {
+  var randomWords = require('random-words');
+  const wordlen = 5;
+  const numtries = 6; 
+
+  function get_word(){
+      var word = ""
+      while (word.length < wordlen){
+          word = (randomWords({exactly: 1, maxLength: wordlen}))[0]
+      }
+      return word.toUpperCase()
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Game wordlen={wordlen} numtries={numtries} word={get_word(5)}/>
       </header>
     </div>
   );
