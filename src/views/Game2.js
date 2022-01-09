@@ -8,6 +8,7 @@ class Game extends React.Component {
         this.keyStroke = this.keyStroke.bind(this);
         this.selectLetter = this.selectLetter.bind(this);
         this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
+        console.log(this.state.word)
     }
 
     originalState(){
@@ -34,7 +35,7 @@ class Game extends React.Component {
         if (this.state.status=="ongoing"){
             localStorage.setItem('state', JSON.stringify(this.state))
         } else if (this.state.status=="success"){
-            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins+1}))
+            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins}))
         } else if (this.state.status=="fail"){
             localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins}))
         }
@@ -63,7 +64,8 @@ class Game extends React.Component {
         if (correctNum == this.props.wordlen){
             this.setState({
                 ...this.state,
-                status:"success"
+                status:"success",
+                wins: this.state.wins+1
             },() => this.writeState())
         } else {
             for (var i = 0; i < tempstylegrid[this.state.yLoc].length; i++) {
@@ -102,7 +104,7 @@ class Game extends React.Component {
         var res = {}
         fetch(url)
             .then(res => {
-                if (res.ok) {
+                if (res.ok || word == this.state.word.toLowerCase()) {
                     this.update_style(word)
                 }
             }
@@ -110,28 +112,30 @@ class Game extends React.Component {
     }
 
     selectLetter(keyCode){
-        var tempgrid = this.state.wordgrid;
-        
-        if (keyCode >= 65 && keyCode <= 90 && this.state.xLoc < this.props.wordlen){     
-            tempgrid[this.state.yLoc][this.state.xLoc] = String.fromCharCode(keyCode);
+        if(this.state.status == "ongoing"){
+            var tempgrid = this.state.wordgrid;
+            
+            if (keyCode >= 65 && keyCode <= 90 && this.state.xLoc < this.props.wordlen){     
+                tempgrid[this.state.yLoc][this.state.xLoc] = String.fromCharCode(keyCode);
+                this.setState({
+                    ...this.state,
+                    xLoc: this.state.xLoc+1
+                },() => this.writeState())
+                console.log(keyCode)
+            } else if (keyCode == 13 && this.state.xLoc == this.props.wordlen){
+                this.check_if_word_exists(this.state.wordgrid[this.state.yLoc])
+            } else if (keyCode == 8 && this.state.xLoc > 0){
+                this.setState({
+                    ...this.state,
+                    xLoc: this.state.xLoc-1
+                },() => this.writeState())
+                tempgrid[this.state.yLoc][this.state.xLoc] = null;
+            }
             this.setState({
                 ...this.state,
-                xLoc: this.state.xLoc+1
+                wordgrid: tempgrid,
             },() => this.writeState())
-
-        } else if (keyCode == 13 && this.state.xLoc == this.props.wordlen){
-            this.check_if_word_exists(this.state.wordgrid[this.state.yLoc])
-        } else if (keyCode == 8 && this.state.xLoc > 0){
-            this.setState({
-                ...this.state,
-                xLoc: this.state.xLoc-1
-            },() => this.writeState())
-            tempgrid[this.state.yLoc][this.state.xLoc] = null;
         }
-        this.setState({
-            ...this.state,
-            wordgrid: tempgrid,
-        },() => this.writeState())
     }
 
     detectKeypress(event){
@@ -151,13 +155,14 @@ class Game extends React.Component {
         )
     } 
 
-    keyStroke(letter){
-        this.selectLetter(letter.charCodeAt(0))
+    keyStroke = (letter,e) => {
+        e.preventDefault();
+        // this.selectLetter(letter.charCodeAt(0))
     }
 
     keyboard (letter,color,key){
         return(
-            <div key={"keyboard"+key} onClick={() => this.keyStroke(letter)} style={{
+            <div key={"keyboard"+key} onClick={(e) => this.keyStroke(letter, e)} style={{
                 ...Styles.keyStyle,
                 backgroundColor:color
                 }}>
@@ -190,6 +195,7 @@ class Game extends React.Component {
     render() {
         return (
             <div style={Styles.mainDivStyle}>
+                <p>Wins: {this.state.wins}</p>
                 <div>
                     {this.gridbox(this.state.wordgrid,this.state.stylegrid)}
                 </div>
