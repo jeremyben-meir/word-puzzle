@@ -7,8 +7,10 @@ class Game extends React.Component {
         this.detectKeypress = this.detectKeypress.bind(this);
         this.keyStroke = this.keyStroke.bind(this);
         this.selectLetter = this.selectLetter.bind(this);
+        // JSON.parse(localStorage.getItem('state')) ||
         this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
         console.log(this.state.word)
+        // localStorage.setItem('state', JSON.stringify(this.state))
     }
 
     originalState(){
@@ -78,7 +80,8 @@ class Game extends React.Component {
                             tempalpha[guess[i]]=Styles.gameColors.misplace
                     } else {
                         tempstylegrid[this.state.yLoc][i]=Styles.gameColors.error
-                        tempalpha[guess[i]]=Styles.gameColors.error
+                        if (tempalpha[guess[i]]=="white")
+                            tempalpha[guess[i]]=Styles.gameColors.error
                     }
                 }
             }
