@@ -23,6 +23,22 @@ export const mainDivStyle = {
     position: "absolute",
 }
 
+export const statsBox = {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection:"row",
+    alignItems: "center",
+    width: "100%"
+}
+
+export const statsBoxDiv = {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection:"row",
+    alignItems: "center",
+    margin: 3,
+}
+
 ////////////////////
 
 export const boxStyle = {

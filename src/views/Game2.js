@@ -12,6 +12,9 @@ class Game extends React.Component {
             localStorage.setItem('state', JSON.stringify(this.state))
         } else {
             this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
+            if (this.state.losses == null){
+                this.state = this.originalState()
+            }
         }
         console.log(this.state.word)
     }
@@ -33,7 +36,9 @@ class Game extends React.Component {
             splits: splits,
             status:"ongoing",
             word: this.props.word,
-            wins: 0
+            wins: 0,
+            losses: 0,
+            points: 0,
         })
     }
     
@@ -41,9 +46,9 @@ class Game extends React.Component {
         if (this.state.status=="ongoing"){
             localStorage.setItem('state', JSON.stringify(this.state))
         } else if (this.state.status=="success"){
-            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins}))
+            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points}))
         } else if (this.state.status=="fail"){
-            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins}))
+            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points}))
         }
     }
 
@@ -71,7 +76,8 @@ class Game extends React.Component {
             this.setState({
                 ...this.state,
                 status:"success",
-                wins: this.state.wins+1
+                wins: this.state.wins+1,
+                points: this.state.points+this.state.yLoc+1
             },() => this.writeState())
         } else {
             for (var i = 0; i < tempstylegrid[this.state.yLoc].length; i++) {
@@ -101,7 +107,8 @@ class Game extends React.Component {
         } else {
             this.setState({
                 ...this.state,
-                status:"fail"
+                status:"fail",
+                losses: this.state.losses+1,
             },() => this.writeState())
         }
     }
@@ -132,7 +139,6 @@ class Game extends React.Component {
                 } else {
                     this.state.xLoc = this.state.xLoc+1
                 }
-                console.log(keyCode)
             } else if (keyCode == 13 && this.state.xLoc == this.props.wordlen){
                 this.check_if_word_exists(this.state.wordgrid[this.state.yLoc])
             } else if (keyCode == 8 && this.state.xLoc > 0){
@@ -219,7 +225,15 @@ class Game extends React.Component {
     render() {
         return (
             <div style={Styles.mainDivStyle}>
-                <p>Wins: {this.state.wins}</p>
+                <div style={Styles.statsBox}>
+                    <p style={Styles.statsBoxDiv}>Wins </p>
+                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins}</p>
+                    <p style={Styles.statsBoxDiv}>Losses </p>
+                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.losses}</p>
+                    <p style={Styles.statsBoxDiv}>Average Score </p>
+                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins == 0 ? 0 : this.state.points/this.state.wins}</p>
+                </div>
+                
                 <div>
                     {this.gridbox(this.state.wordgrid,this.state.stylegrid)}
                 </div>
