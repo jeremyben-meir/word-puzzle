@@ -4,7 +4,8 @@ export const gameSettings = {
     error: "#95a5a6",
     correct: "#2ecc71",
     bigBox: 50,
-    smallBox: 30
+    smallBoxWidth: 25,
+    smallBoxHeight: 35
 }
 
 export const mainMainDiv = {
@@ -36,8 +37,8 @@ export const boxStyle = {
 } 
 
 export const keyStyle = {
-    width:gameSettings.smallBox,
-    height:gameSettings.smallBox,
+    width:gameSettings.smallBoxWidth,
+    height:gameSettings.smallBoxHeight,
     margin: "3px",
     justifyContent: "center",
     alignItems: "center",
@@ -59,7 +60,7 @@ export const wordStyle = {
 export const subBankStyle = {
     display: "flex",
     flexDirection: "row",
-    height:gameSettings.smallBox,
+    height:gameSettings.smallBoxHeight,
     justifyContent:"center",
     margin: "3px",
 }

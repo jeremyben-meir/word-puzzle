@@ -118,24 +118,32 @@ class Game extends React.Component {
             )
     }
 
-    selectLetter(keyCode){
+    selectLetter(keyCode, setting=false){
         if(this.state.status == "ongoing"){
             var tempgrid = this.state.wordgrid;
             
             if (keyCode >= 65 && keyCode <= 90 && this.state.xLoc < this.props.wordlen){     
                 tempgrid[this.state.yLoc][this.state.xLoc] = String.fromCharCode(keyCode);
-                this.setState({
-                    ...this.state,
-                    xLoc: this.state.xLoc+1
-                },() => this.writeState())
+                if (setting){
+                    this.setState({
+                        ...this.state,
+                        xLoc: this.state.xLoc+1
+                    },() => this.writeState())
+                } else {
+                    this.state.xLoc = this.state.xLoc+1
+                }
                 console.log(keyCode)
             } else if (keyCode == 13 && this.state.xLoc == this.props.wordlen){
                 this.check_if_word_exists(this.state.wordgrid[this.state.yLoc])
             } else if (keyCode == 8 && this.state.xLoc > 0){
-                this.setState({
-                    ...this.state,
-                    xLoc: this.state.xLoc-1
-                },() => this.writeState())
+                if (setting) {
+                    this.setState({
+                        ...this.state,
+                        xLoc: this.state.xLoc-1
+                    },() => this.writeState())
+                } else {
+                    this.state.xLoc = this.state.xLoc-1
+                }
                 tempgrid[this.state.yLoc][this.state.xLoc] = null;
             }
             this.setState({
@@ -162,7 +170,7 @@ class Game extends React.Component {
         )
     } 
 
-    keyStroke = (letter,e) => {
+    keyStroke (letter,e) {
         e.preventDefault();
         var keyCode = 0
         if (letter == "BK")
@@ -171,8 +179,9 @@ class Game extends React.Component {
             keyCode = 13;
         else
             keyCode = letter.charCodeAt(0)
-        
+                
         this.selectLetter(keyCode)
+        this.state.xLoc = this.state.xLoc+1
     }
 
     keyboard (letter,color,key){
