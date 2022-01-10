@@ -231,7 +231,7 @@ class Game extends React.Component {
                     <p style={Styles.statsBoxDiv}>Losses </p>
                     <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.losses}</p>
                     <p style={Styles.statsBoxDiv}>Average Score </p>
-                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins == 0 ? 0 : this.state.points/this.state.wins}</p>
+                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins == 0 ? 0 : Math.round((this.state.points/this.state.wins) * 100) / 100}</p>
                 </div>
                 
                 <div>
