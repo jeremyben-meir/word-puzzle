@@ -9,6 +9,7 @@ class Game extends React.Component {
         this.keyStroke = this.keyStroke.bind(this);
         this.selectLetter = this.selectLetter.bind(this);
         this.handleRetry = this.handleRetry.bind(this);
+
         if (false){
             this.state = this.originalState()
             localStorage.setItem('state', JSON.stringify(this.state))
@@ -39,12 +40,21 @@ class Game extends React.Component {
             alphabet: alphabet,
             splits: splits,
             status:"ongoing",
-            word: this.props.word,
+            word: this.get_word(),
             wins: 0,
             losses: 0,
             points: 0,
             retryHidden: "hidden"
         })
+    }
+
+    get_word(){
+        var randomWords = require('random-words');
+        var word = ""
+        while (word.length < this.props.wordlen){
+            word = (randomWords({exactly: 1, maxLength: this.props.wordlen}))[0]
+        }
+        return word.toUpperCase()
     }
     
     writeState(){
