@@ -5,7 +5,8 @@ export const gameSettings = {
     correct: "#2ecc71",
     bigBox: 50,
     smallBoxWidth: 25,
-    smallBoxHeight: 35
+    smallBoxHeight: 35,
+    retrySize: 20
 }
 
 export const mainMainDiv = {
@@ -41,9 +42,19 @@ export const statsBoxDiv = {
     userSelect: "none",
 }
 
+export const retryDivStyle = {
+    width: "100%",
+    height: gameSettings.retrySize,
+    display: "flex",
+    justifyContent: "center",
+    flexDirection:"column",
+    alignItems: "center",
+    marginTop: -gameSettings.retrySize,
+}
+
 export const retryStyle = {
-    width: 20,
-    height: 20
+    width: gameSettings.retrySize,
+    height: gameSettings.retrySize,
 }
 
 ////////////////////

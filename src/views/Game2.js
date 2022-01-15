@@ -115,8 +115,31 @@ class Game extends React.Component {
         }
     }
 
+    statText(){
+        console.log(this.state.status)
+
+        if (this.state.status == "fail"){
+            return(
+            <div style={Styles.statsBox}>
+                <p style={Styles.statsBoxDiv}>The word was </p>
+                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.word.toUpperCase()}</p>
+            </div> 
+            )
+        }
+        return(
+            <div style={Styles.statsBox}>
+                <p style={Styles.statsBoxDiv}>Wins </p>
+                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins}</p>
+                <p style={Styles.statsBoxDiv}>Losses </p>
+                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.losses}</p>
+                <p style={Styles.statsBoxDiv}>Average Score </p>
+                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins == 0 ? 0 : Math.round((this.state.points/this.state.wins) * 100) / 100}</p>
+            </div> 
+        )
+    }
+
     check_if_word_exists(word) {
-        const url = "https://api.wordnik.com/v4/word.json/" + word.join("").toLowerCase() + "/definitions?limit=200&includeRelated=false&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5";
+        const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"+word.join("").toLowerCase()
         var res = {}
         fetch(url)
             .then(res => {
@@ -233,16 +256,16 @@ class Game extends React.Component {
 
     render() {
         return (
+            <div>
+            
+
             <div style={Styles.mainDivStyle}>
-                <img src={Retry} onClick={(e) => this.handleRetry(e)} alt="Retry" style={{...Styles.retryStyle, visibility: this.state.retryHidden}} />
-                <div style={Styles.statsBox}>
-                    <p style={Styles.statsBoxDiv}>Wins </p>
-                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins}</p>
-                    <p style={Styles.statsBoxDiv}>Losses </p>
-                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.losses}</p>
-                    <p style={Styles.statsBoxDiv}>Average Score </p>
-                    <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins == 0 ? 0 : Math.round((this.state.points/this.state.wins) * 100) / 100}</p>
+
+                <div style={Styles.retryDivStyle} >
+                    <img src={Retry} onClick={(e) => this.handleRetry(e)} alt="Retry" style={{...Styles.retryStyle, visibility: this.state.retryHidden}} />
                 </div>
+                
+                {this.statText()}
                 
                 <div>
                     {this.gridbox(this.state.wordgrid,this.state.stylegrid)}
@@ -255,6 +278,7 @@ class Game extends React.Component {
                     </div>
                 ))}
                 </div>
+            </div>
             </div>
         )
     }
