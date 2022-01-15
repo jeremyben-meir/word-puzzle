@@ -15,11 +15,18 @@ class Game extends React.Component {
             localStorage.setItem('state', JSON.stringify(this.state))
         } else {
             this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
+            const dimensions = [
+                this.state.wordgrid.length,
+                this.state.wordgrid.reduce((x, y) => Math.max(x, y.length), 0)
+            ];
             if (this.state.losses == null){
                 this.state = this.originalState()
+            } else if (this.props.wordlen != dimensions[1] || this.props.numtries != dimensions[0]) {
+                this.handleRetry()
             } else if (this.state.retryHidden == null){
                 this.state = {...this.state, retryHidden:"hidden"}
             }
+            this.handleRetry()
         }
     }
 
@@ -58,7 +65,6 @@ class Game extends React.Component {
     
     writeState(){
         localStorage.setItem('state', JSON.stringify(this.state))
-        // localStorage.setItem('state', JSON.stringify())
     }
 
     componentDidMount(){
@@ -82,13 +88,13 @@ class Game extends React.Component {
             }
         }
         if (correctNum == this.props.wordlen){
-            this.setState({
+            return({
                 ...this.state,
                 status:"success",
                 wins: this.state.wins+1,
                 points: this.state.points+this.state.yLoc+1,
                 retryHidden: "visible"
-            },() => this.writeState())
+            })
         } else {
             for (var i = 0; i < tempstylegrid[this.state.yLoc].length; i++) {
                 const index = tempword.indexOf(guess[i]);
@@ -105,22 +111,24 @@ class Game extends React.Component {
                     }
                 }
             }
-        }
-        if (this.state.yLoc < this.props.numtries-1){
-            this.setState({
-                ...this.state,
-                xLoc: 0,
-                yLoc: this.state.yLoc+1,
-                stylegrid: tempstylegrid,
-                alphabet: tempalpha
-            },() => this.writeState())
-        } else {
-            this.setState({
-                ...this.state,
-                status:"fail",
-                losses: this.state.losses+1,
-                retryHidden: "visible"
-            },() => this.writeState())
+            if (this.state.wordgrid[this.state.yLoc][this.state.xLoc]==""){
+                return (this.state)
+            } else if (this.state.yLoc < this.props.numtries-1){
+                return({
+                    ...this.state,
+                    xLoc: 0,
+                    yLoc: this.state.yLoc+1,
+                    stylegrid: tempstylegrid,
+                    alphabet: tempalpha
+                })
+            } else {
+                return({
+                    ...this.state,
+                    status:"fail",
+                    losses: this.state.losses+1,
+                    retryHidden: "visible"
+                })
+            }
         }
     }
 
@@ -145,48 +153,39 @@ class Game extends React.Component {
         )
     }
 
-    async check_if_word_exists(word) {
-        const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"+word.join("").toLowerCase()
-        await fetch(url)
-            .then(res => {
-                if (res.ok || word == this.state.word.toLowerCase()) {
-                    this.update_style(word)
-                }
-            }
-            )
-    }
-
-    async selectLetter(keyCode, setting=false){
+    async selectLetter(keyCode){
         if(this.state.status == "ongoing"){
             var tempgrid = this.state.wordgrid;
+            var tempXLoc = this.state.xLoc
+
+            var is_key = keyCode >= 65 && keyCode <= 90 && tempXLoc < this.props.wordlen
+            var is_bksp = keyCode == 8 && tempXLoc > 0
             
-            if (keyCode >= 65 && keyCode <= 90 && this.state.xLoc < this.props.wordlen){     
-                tempgrid[this.state.yLoc][this.state.xLoc] = String.fromCharCode(keyCode);
-                if (setting){
-                    this.setState({
-                        ...this.state,
-                        xLoc: this.state.xLoc+1
-                    },() => this.writeState())
-                } else {
-                    this.state.xLoc = this.state.xLoc+1
+            if (is_key || is_bksp){    
+                if (is_key){ 
+                    tempgrid[this.state.yLoc][tempXLoc] = String.fromCharCode(keyCode);
+                    tempXLoc += 1
+                } else if (is_bksp){
+                    tempXLoc -=1
+                    tempgrid[this.state.yLoc][tempXLoc] = null;
                 }
-            } else if (keyCode == 13 && this.state.xLoc == this.props.wordlen){
-                await this.check_if_word_exists(this.state.wordgrid[this.state.yLoc])
-            } else if (keyCode == 8 && this.state.xLoc > 0){
-                if (setting) {
-                    this.setState({
-                        ...this.state,
-                        xLoc: this.state.xLoc-1
-                    },() => this.writeState())
-                } else {
-                    this.state.xLoc = this.state.xLoc-1
-                }
-                tempgrid[this.state.yLoc][this.state.xLoc] = null;
-            }
-            this.setState({
-                ...this.state,
-                wordgrid: tempgrid,
-            },() => this.writeState())
+                this.setState({
+                    ...this.state,
+                    wordgrid: tempgrid,
+                    xLoc: tempXLoc
+                },() => this.writeState())
+            } else if (keyCode == 13 && tempXLoc == this.props.wordlen){
+                const word = this.state.wordgrid[this.state.yLoc]
+                const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"+word.join("").toLowerCase()
+                const response = await fetch(url)
+                if (response.ok || word == this.state.word.toLowerCase()) {
+                    const result_state = await this.update_style(word)
+                    this.setState(result_state,() => {
+                        this.writeState()
+                    })
+                } 
+                console.log(tempgrid)
+            } 
         }
         return
     }
@@ -219,7 +218,6 @@ class Game extends React.Component {
             keyCode = letter.charCodeAt(0)
                 
         await this.selectLetter(keyCode)
-        this.state.xLoc = this.state.xLoc+1
     }
 
     keyboard (letter,color,key){
