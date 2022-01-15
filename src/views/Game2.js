@@ -22,7 +22,7 @@ class Game extends React.Component {
             if (this.state.losses == null){
                 this.state = this.originalState()
             } else if (this.props.wordlen != dimensions[1] || this.props.numtries != dimensions[0]) {
-                this.handleRetry()
+                this.state = {...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points}
             } else if (this.state.retryHidden == null){
                 this.state = {...this.state, retryHidden:"hidden"}
             }
