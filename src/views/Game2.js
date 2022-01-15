@@ -184,7 +184,6 @@ class Game extends React.Component {
                         this.writeState()
                     })
                 } 
-                console.log(tempgrid)
             } 
         }
         return
