@@ -4,9 +4,11 @@ export const gameSettings = {
     error: "#95a5a6",
     correct: "#2ecc71",
     bigBox: 50,
-    smallBoxWidth: 25,
-    smallBoxHeight: 35,
-    retrySize: 20
+    smallBoxWidth: 30,
+    smallBoxHeight: 40,
+    retrySize: 20,
+    keyboardSpacing: "3px",
+    gridSpacing: "5px"
 }
 
 export const mainMainDiv = {
@@ -62,7 +64,7 @@ export const retryStyle = {
 export const boxStyle = {
     width:gameSettings.bigBox,
     height:gameSettings.bigBox,
-    margin:"5px",
+    margin:gameSettings.gridSpacing,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "8px",
@@ -73,12 +75,24 @@ export const boxStyle = {
 export const keyStyle = {
     width:gameSettings.smallBoxWidth,
     height:gameSettings.smallBoxHeight,
-    margin: "3px",
+    margin: gameSettings.keyboardSpacing,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "8px",
     border: "2px solid "+gameSettings.bkgnd,
     userSelect: "none",
+    display: "flex",
+}
+export const specialKeyStyle = {
+    width:gameSettings.smallBoxWidth * 1.5,
+    height:gameSettings.smallBoxHeight,
+    margin: gameSettings.keyboardSpacing,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "8px",
+    border: "2px solid "+gameSettings.bkgnd,
+    userSelect: "none",
+    display: "flex",
 }
 
 ////////////////////
@@ -88,7 +102,7 @@ export const wordStyle = {
     flexDirection: "row",
     height:gameSettings.bigBox,
     justifyContent: "center",
-    margin: "5px",
+    margin: gameSettings.gridSpacing,
 }
 
 export const subBankStyle = {
@@ -96,7 +110,7 @@ export const subBankStyle = {
     flexDirection: "row",
     height:gameSettings.smallBoxHeight,
     justifyContent:"center",
-    margin: "3px",
+    margin: gameSettings.keyboardSpacing,
 }
 
 ////////////////////////
@@ -127,7 +141,12 @@ export const keyFontStyle = {
     textAlign: "center",
     fontSize: "medium",
     userSelect: "none",
-    top: "50%",
-    transform: "translate(0, -50%)",
+    top: "60%",
     color: gameSettings.bkgnd,
+}
+
+export const specialKeyFontStyle = {
+    width: "60%",
+    margin: "auto",
+    display: "block",
 }

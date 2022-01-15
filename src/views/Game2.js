@@ -1,6 +1,8 @@
 import * as Styles from "../assets/Styles";
 import React, { useState, useEffect } from "react";
 import Retry from '../images/retry.png';
+import Backspace from '../images/backspace.png';
+import Return from '../images/return.png';
 
 class Game extends React.Component {
     constructor(props){
@@ -9,6 +11,9 @@ class Game extends React.Component {
         this.keyStroke = this.keyStroke.bind(this);
         this.selectLetter = this.selectLetter.bind(this);
         this.handleRetry = this.handleRetry.bind(this);
+
+        this.splits = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'], ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],["EN", 'Z', 'X', 'C', 'V', 'B', 'N', 'M', "BK"]];
+
 
         if (false){
             this.state = this.originalState()
@@ -32,7 +37,6 @@ class Game extends React.Component {
 
     originalState(){
         var alphabet = {};
-        var splits = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'], ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],["BK", 'Z', 'X', 'C', 'V', 'B', 'N', 'M', "EN"]];
 
         for (var i = 65; i <= 90; i++){
             alphabet[String.fromCharCode(i)]="white"
@@ -44,7 +48,6 @@ class Game extends React.Component {
             xLoc: 0,
             yLoc: 0,
             alphabet: alphabet,
-            splits: splits,
             status:"ongoing",
             word: this.get_word(),
             wins: 0,
@@ -220,14 +223,16 @@ class Game extends React.Component {
     }
 
     keyboard (letter,color,key){
+        const is_special = (letter=="BK") || (letter=="EN")
+        const special_view =(<img src={(letter=="BK") ? Backspace : Return} style={Styles.specialKeyFontStyle} />)
+        const regular_view = <p style={Styles.keyFontStyle}> {letter ? letter.toUpperCase() : ""} </p>
+        
         return(
             <div key={"keyboard"+key} onClick={(e) => this.keyStroke(letter, e)} style={{
-                ...Styles.keyStyle,
+                ...(is_special ? Styles.specialKeyStyle : Styles.keyStyle),
                 backgroundColor:color
                 }}>
-                <p style={Styles.keyFontStyle}>
-                    {letter ? letter.toUpperCase() : ""}
-                </p>
+                {is_special ? special_view : regular_view}
             </div>
         )
     } 
@@ -279,7 +284,7 @@ class Game extends React.Component {
                     {this.gridbox(this.state.wordgrid,this.state.stylegrid)}
                 </div>
                 <div style={Styles.bankStyle}>
-                {Object.entries(this.state.splits).map((key_val, index0) => (
+                {Object.entries(this.splits).map((key_val, index0) => (
                     <div key={index0} style={Styles.subBankStyle}>
                     {Object.entries(key_val[1]).map((link, index) =>
                         (this.keyboard(link[1],this.state.alphabet[link[1]],index)))}
