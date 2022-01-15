@@ -78,6 +78,7 @@ class Game extends React.Component {
     }
 
     async update_style(guess){
+        if (this.state.wordgrid[this.state.yLoc][this.state.xLoc]=="") return;
         var tempstylegrid = this.state.stylegrid;
         var tempword = this.state.word.split("");
         var tempalpha = this.state.alphabet;
@@ -114,9 +115,7 @@ class Game extends React.Component {
                     }
                 }
             }
-            if (this.state.wordgrid[this.state.yLoc][this.state.xLoc]==""){
-                return (this.state)
-            } else if (this.state.yLoc < this.props.numtries-1){
+            if (this.state.yLoc < this.props.numtries-1){
                 return({
                     ...this.state,
                     xLoc: 0,
