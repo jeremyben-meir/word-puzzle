@@ -21,7 +21,6 @@ class Game extends React.Component {
                 this.state = {...this.state, retryHidden:"hidden"}
             }
         }
-        console.log(this.state.word)
     }
 
     originalState(){
@@ -69,7 +68,7 @@ class Game extends React.Component {
         document.removeEventListener("keydown", this.detectKeypress, false);
     }
 
-    update_style(guess){
+    async update_style(guess){
         var tempstylegrid = this.state.stylegrid;
         var tempword = this.state.word.split("");
         var tempalpha = this.state.alphabet;
@@ -126,8 +125,6 @@ class Game extends React.Component {
     }
 
     statText(){
-        console.log(this.state.status)
-
         if (this.state.status == "fail"){
             return(
             <div style={Styles.statsBox}>
@@ -148,10 +145,9 @@ class Game extends React.Component {
         )
     }
 
-    check_if_word_exists(word) {
+    async check_if_word_exists(word) {
         const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"+word.join("").toLowerCase()
-        var res = {}
-        fetch(url)
+        await fetch(url)
             .then(res => {
                 if (res.ok || word == this.state.word.toLowerCase()) {
                     this.update_style(word)
@@ -160,7 +156,7 @@ class Game extends React.Component {
             )
     }
 
-    selectLetter(keyCode, setting=false){
+    async selectLetter(keyCode, setting=false){
         if(this.state.status == "ongoing"){
             var tempgrid = this.state.wordgrid;
             
@@ -175,7 +171,7 @@ class Game extends React.Component {
                     this.state.xLoc = this.state.xLoc+1
                 }
             } else if (keyCode == 13 && this.state.xLoc == this.props.wordlen){
-                this.check_if_word_exists(this.state.wordgrid[this.state.yLoc])
+                await this.check_if_word_exists(this.state.wordgrid[this.state.yLoc])
             } else if (keyCode == 8 && this.state.xLoc > 0){
                 if (setting) {
                     this.setState({
@@ -192,10 +188,11 @@ class Game extends React.Component {
                 wordgrid: tempgrid,
             },() => this.writeState())
         }
+        return
     }
 
-    detectKeypress(event){
-        this.selectLetter(event.keyCode)
+    async detectKeypress(event){
+        await this.selectLetter(event.keyCode)
     }
 
     letterbox (letter,color,key){
@@ -211,7 +208,7 @@ class Game extends React.Component {
         )
     } 
 
-    keyStroke (letter,e) {
+    async keyStroke (letter,e) {
         e.preventDefault();
         var keyCode = 0
         if (letter == "BK")
@@ -221,7 +218,7 @@ class Game extends React.Component {
         else
             keyCode = letter.charCodeAt(0)
                 
-        this.selectLetter(keyCode)
+        await this.selectLetter(keyCode)
         this.state.xLoc = this.state.xLoc+1
     }
 
@@ -261,7 +258,11 @@ class Game extends React.Component {
     handleRetry(){
         this.setState({
             ...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points
-        },() => this.writeState())
+        },() => {
+            this.writeState()
+            console.log(this.state.word)
+        })
+
     }
 
     render() {
