@@ -4,7 +4,7 @@ export const gameSettings = {
     error: "#95a5a6",
     correct: "#2ecc71",
     bigBox: 50,
-    smallBoxWidth: 30,
+    smallBoxWidth: 26,
     smallBoxHeight: 40,
     retrySize: 20,
     keyboardSpacing: "3px",
