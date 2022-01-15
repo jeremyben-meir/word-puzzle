@@ -1,5 +1,6 @@
 import * as Styles from "../assets/Styles";
 import React, { useState, useEffect } from "react";
+import Retry from '../images/retry.png';
 
 class Game extends React.Component {
     constructor(props){
@@ -7,12 +8,13 @@ class Game extends React.Component {
         this.detectKeypress = this.detectKeypress.bind(this);
         this.keyStroke = this.keyStroke.bind(this);
         this.selectLetter = this.selectLetter.bind(this);
+        this.handleRetry = this.handleRetry.bind(this);
         if (false){
             this.state = this.originalState()
             localStorage.setItem('state', JSON.stringify(this.state))
         } else {
             this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
-            if (this.state.losses == null){
+            if (this.state.retryHidden == null){
                 this.state = this.originalState()
             }
         }
@@ -39,17 +41,13 @@ class Game extends React.Component {
             wins: 0,
             losses: 0,
             points: 0,
+            retryHidden: "hidden"
         })
     }
     
     writeState(){
-        if (this.state.status=="ongoing"){
-            localStorage.setItem('state', JSON.stringify(this.state))
-        } else if (this.state.status=="success"){
-            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points}))
-        } else if (this.state.status=="fail"){
-            localStorage.setItem('state', JSON.stringify({...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points}))
-        }
+        localStorage.setItem('state', JSON.stringify(this.state))
+        // localStorage.setItem('state', JSON.stringify())
     }
 
     componentDidMount(){
@@ -77,7 +75,8 @@ class Game extends React.Component {
                 ...this.state,
                 status:"success",
                 wins: this.state.wins+1,
-                points: this.state.points+this.state.yLoc+1
+                points: this.state.points+this.state.yLoc+1,
+                retryHidden: "visible"
             },() => this.writeState())
         } else {
             for (var i = 0; i < tempstylegrid[this.state.yLoc].length; i++) {
@@ -109,6 +108,7 @@ class Game extends React.Component {
                 ...this.state,
                 status:"fail",
                 losses: this.state.losses+1,
+                retryHidden: "visible"
             },() => this.writeState())
         }
     }
@@ -222,9 +222,17 @@ class Game extends React.Component {
             </div>
         )
     }
+
+    handleRetry(){
+        this.setState({
+            ...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points
+        },() => this.writeState())
+    }
+
     render() {
         return (
             <div style={Styles.mainDivStyle}>
+                <img src={Retry} onClick={(e) => this.handleRetry(e)} alt="Retry" style={{...Styles.retryStyle, visibility: this.state.retryHidden}} />
                 <div style={Styles.statsBox}>
                     <p style={Styles.statsBoxDiv}>Wins </p>
                     <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins}</p>

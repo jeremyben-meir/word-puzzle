@@ -28,7 +28,8 @@ export const statsBox = {
     justifyContent: "center",
     flexDirection:"row",
     alignItems: "center",
-    width: "100%"
+    width: "100%",
+    marginTop: 20
 }
 
 export const statsBoxDiv = {
@@ -37,6 +38,12 @@ export const statsBoxDiv = {
     flexDirection:"row",
     alignItems: "center",
     margin: 3,
+    userSelect: "none",
+}
+
+export const retryStyle = {
+    width: 20,
+    height: 20
 }
 
 ////////////////////
