@@ -14,8 +14,10 @@ class Game extends React.Component {
             localStorage.setItem('state', JSON.stringify(this.state))
         } else {
             this.state = JSON.parse(localStorage.getItem('state')) || this.originalState()
-            if (this.state.retryHidden == null){
+            if (this.state.losses == null){
                 this.state = this.originalState()
+            } else if (this.state.retryHidden == null){
+                this.state = {...this.state, retryHidden:"hidden"}
             }
         }
         console.log(this.state.word)
