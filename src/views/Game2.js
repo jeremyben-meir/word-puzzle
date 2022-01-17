@@ -30,6 +30,8 @@ class Game extends React.Component {
                 this.state = {...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points}
             } else if (this.state.retryHidden == null){
                 this.state = {...this.state, retryHidden:"hidden"}
+            } else if (this.state.allowType == null) {
+                this.state = {...this.state, allowType:true}
             }
             this.handleRetry()
         }
@@ -53,7 +55,8 @@ class Game extends React.Component {
             wins: 0,
             losses: 0,
             points: 0,
-            retryHidden: "hidden"
+            retryHidden: "hidden",
+            allowType: true
         })
     }
 
@@ -68,6 +71,12 @@ class Game extends React.Component {
     
     writeState(){
         localStorage.setItem('state', JSON.stringify(this.state))
+        if(this.state.status == "fail" || this.state.status == "success"){
+            this.props.ReactGa.event({
+                category:this.state.yLoc+1,
+                action:this.state.status
+            })
+        } 
     }
 
     componentDidMount(){
@@ -156,37 +165,63 @@ class Game extends React.Component {
     }
 
     async selectLetter(keyCode){
-        if(this.state.status == "ongoing"){
-            var tempgrid = this.state.wordgrid;
-            var tempXLoc = this.state.xLoc
+        if (this.state.allowType){
+            this.setState({
+                ...this.state,
+                allowType: false
+            })
+            if(this.state.status == "ongoing"){
+                var tempgrid = this.state.wordgrid;
+                var tempXLoc = this.state.xLoc
 
-            var is_key = keyCode >= 65 && keyCode <= 90 && tempXLoc < this.props.wordlen
-            var is_bksp = keyCode == 8 && tempXLoc > 0
-            
-            if (is_key || is_bksp){    
-                if (is_key){ 
-                    tempgrid[this.state.yLoc][tempXLoc] = String.fromCharCode(keyCode);
-                    tempXLoc += 1
-                } else if (is_bksp){
-                    tempXLoc -=1
-                    tempgrid[this.state.yLoc][tempXLoc] = null;
-                }
-                this.setState({
-                    ...this.state,
-                    wordgrid: tempgrid,
-                    xLoc: tempXLoc
-                },() => this.writeState())
-            } else if (keyCode == 13 && tempXLoc == this.props.wordlen){
-                const word = this.state.wordgrid[this.state.yLoc]
-                const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"+word.join("").toLowerCase()
-                const response = await fetch(url)
-                if (response.ok || word == this.state.word.toLowerCase()) {
-                    const result_state = await this.update_style(word)
-                    this.setState(result_state,() => {
-                        this.writeState()
+                var is_key = keyCode >= 65 && keyCode <= 90 && tempXLoc < this.props.wordlen
+                var is_bksp = keyCode == 8 && tempXLoc > 0
+                
+                if (is_key || is_bksp){    
+                    if (is_key){ 
+                        tempgrid[this.state.yLoc][tempXLoc] = String.fromCharCode(keyCode);
+                        tempXLoc += 1
+                    } else if (is_bksp){
+                        tempXLoc -=1
+                        tempgrid[this.state.yLoc][tempXLoc] = null;
+                    }
+                    this.setState({
+                        ...this.state,
+                        wordgrid: tempgrid,
+                        xLoc: tempXLoc
+                    },() => this.writeState())
+                } else if (keyCode == 13 && tempXLoc == this.props.wordlen){
+                    const word = this.state.wordgrid[this.state.yLoc]
+                    const url = "https://wordsapiv1.p.rapidapi.com/words/"+word.join("")+"/definitions"
+                    const response = await fetch(url, {
+                        "method": "GET",
+                        "headers": {
+                            "x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
+                            "x-rapidapi-key": "4fa7dfd9c1msh7772640164c9952p1a4bbdjsne0d8086365d2"
+                        }
                     })
+                    if (response.ok || word == this.state.word.toLowerCase()) {
+                        console.log(response)
+                        const result_state = await this.update_style(word)
+                        this.setState(result_state,() => {
+                            this.writeState()
+                        })
+                    }
+                    // const word = this.state.wordgrid[this.state.yLoc]
+                    // const url = "https://api.dictionaryapi.dev/api/v2/entries/en/"+word.join("").toLowerCase()
+                    // const response = await fetch(url)
+                    // if (response.ok || word == this.state.word.toLowerCase()) {
+                    //     const result_state = await this.update_style(word)
+                    //     this.setState(result_state,() => {
+                    //         this.writeState()
+                    //     })
+                    // } 
                 } 
-            } 
+            }
+            this.setState({
+                ...this.state,
+                allowType: true
+            },() => this.writeState())
         }
         return
     }
@@ -258,7 +293,7 @@ class Game extends React.Component {
 
     handleRetry(){
         this.setState({
-            ...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points
+            ...this.originalState(), wins:this.state.wins, losses:this.state.losses, points:this.state.points, allowType: true
         },() => {
             this.writeState()
             console.log(this.state.word)
