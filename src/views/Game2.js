@@ -301,9 +301,9 @@ class Game extends React.Component {
         return (
             <div style={Styles.mainDivStyle}>
 
-                {/* <div style={Styles.retryDivStyle} >
-                    <img src={Retry} onClick={(e) => this.handleRetry(e)} alt="Retry" style={{...Styles.retryStyle, visibility: this.state.retryHidden}} />
-                </div> */}
+                <div style={Styles.headerDivStyle} >
+                    <p style={Styles.headerFontStyle}>Word Puzzle</p>
+                </div>
                 
                 {this.statText()}
 

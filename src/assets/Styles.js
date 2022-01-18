@@ -20,7 +20,7 @@ export const mainDivStyle = {
 
 ////////////////////
 
-export const retryDivStyle = {
+export const headerDivStyle = {
     flex: 9,
     width: "100%",
 
@@ -28,6 +28,7 @@ export const retryDivStyle = {
     justifyContent: "center",
     alignItems:"center",
     flexDirection:"row",
+    borderBottom: "2px dotted" + gameSettings.bkgnd,
 }
 
 export const statsDivStyle = {
@@ -51,7 +52,7 @@ export const gridDivStyle = {
 }
 
 export const bankDivStyle = {
-    flex: 30,
+    flex: 25,
     width: "100%",
 
     display: "flex",
@@ -81,11 +82,6 @@ export const bankRowStyle = {
 }
 
 ////////////////
-
-export const retryStyle = {
-    height: 30,
-    userSelect: "none",
-}
 
 export const statsStyle = {
     display: "flex",
@@ -130,6 +126,23 @@ export const fontStyleDiv = {
 }
 
 ////////////////////
+
+// export const retryStyle = {
+//     position: "absolute",
+//     verticalAlign: "center",
+//     textAlign: "center",
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems:"center",
+// }
+
+export const headerFontStyle = {
+    position: "absolute",
+    fontSize: "x-large",
+    fontWeight: "bold",
+    userSelect: "none",
+    color: gameSettings.bkgnd,
+}
 
 export const fontStyle = {
     fontSize: "x-large",
