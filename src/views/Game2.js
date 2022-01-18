@@ -200,7 +200,7 @@ class Game extends React.Component {
                         this.writeState()
                     })
                 }
-            } 
+            }
         }    
         return
     }
@@ -210,7 +210,9 @@ class Game extends React.Component {
     }
 
     async triggerSelect(keyCode){
-        if (this.allowType){
+        if (keyCode == 13 && this.state.retryHidden == "visible"){
+            this.handleRetry()
+        } else if (this.allowType){
             this.allowType = false
             await this.selectLetter(keyCode)
             this.allowType = true
