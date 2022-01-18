@@ -51,7 +51,7 @@ export const gridDivStyle = {
 }
 
 export const bankDivStyle = {
-    flex: 25,
+    flex: 30,
     width: "100%",
 
     display: "flex",
@@ -64,7 +64,7 @@ export const bankDivStyle = {
 
 export const gridRowStyle = {
     flex:1,
-    width: "100%",
+    width:"100%",
     
     display: "flex",
     flexDirection: "row",
@@ -73,6 +73,7 @@ export const gridRowStyle = {
 
 export const bankRowStyle = {
     flex:1,
+    width:"100%",
 
     display: "flex",
     flexDirection: "row",
@@ -102,7 +103,7 @@ export const boxStyle = {
     borderRadius: "8px",
     border: "2px solid " + gameSettings.bkgnd,
     position: "relative",
-    aspectRatio:"1/1",
+    width:"9vh"
 } 
 
 export const keyStyle = {
@@ -112,8 +113,6 @@ export const keyStyle = {
     alignItems: "center",
     borderRadius: "8px",
     border: "2px solid "+gameSettings.bkgnd,
-    textAlign:"center",
-    userSelect: "none",
     position: "relative",
 }
 
@@ -121,20 +120,18 @@ export const keyStyle = {
 
 export const fontStyleDiv = {
     position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
     verticalAlign: "center",
     textAlign: "center",
     display: "flex",
     justifyContent: "center",
     alignItems:"center",
-    width:"100%"
+    width:"100%",
+    height:"100%",
 }
 
+////////////////////
+
 export const fontStyle = {
-    
     fontSize: "x-large",
     fontWeight: "bold",
     userSelect: "none",
@@ -144,7 +141,6 @@ export const keyFontStyle = {
     fontSize: "medium",
     fontWeight: "bold",
     userSelect: "none",
-    top: "60%",
     color: gameSettings.bkgnd,
 }
 

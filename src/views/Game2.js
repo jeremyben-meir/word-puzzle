@@ -156,7 +156,7 @@ class Game extends React.Component {
         }
         return(
             <div style={Styles.statsDivStyle}>
-                <p style={Styles.statsStyle}>Win </p>
+                <p style={Styles.statsStyle}>Wins </p>
                 <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.wins}</p>
                 <p style={Styles.statsStyle}>Losses </p>
                 <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.losses}</p>
