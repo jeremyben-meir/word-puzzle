@@ -14,9 +14,7 @@ function App() {
   }, [])
 
   return (
-    <div style={Styles.mainMainDiv}>
-        <Game wordlen={wordlen} numtries={numtries} ReactGa={ReactGa}/>
-    </div>
+    <Game wordlen={wordlen} numtries={numtries} ReactGa={ReactGa}/>
   );
 }
 

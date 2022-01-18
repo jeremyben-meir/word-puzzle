@@ -3,150 +3,155 @@ export const gameSettings = {
     misplace: "#f1c40f",
     error: "#95a5a6",
     correct: "#2ecc71",
-    bigBox: 50,
-    smallBoxWidth: 26,
-    smallBoxHeight: 40,
-    retrySize: 20,
     keyboardSpacing: "3px",
     gridSpacing: "5px"
 }
 
-export const mainMainDiv = {
-    width:"100%",
-    height:"100%",
-}
-
 export const mainDivStyle = {
-    display: "flex",
-    justifyContent: "center",
-    flexDirection:"column",
-    alignItems: "center",
-    width:"100%",
-    height:"100%",
-    position: "absolute",
-}
-
-export const statsBox = {
-    display: "flex",
-    justifyContent: "center",
-    flexDirection:"row",
-    alignItems: "center",
+    height: "100%",
     width: "100%",
-    marginTop: 20
-}
+    position:"absolute",
 
-export const statsBoxDiv = {
     display: "flex",
-    justifyContent: "center",
-    flexDirection:"row",
-    alignItems: "center",
-    margin: 3,
-    userSelect: "none",
-}
-
-export const retryDivStyle = {
-    width: "100%",
-    height: gameSettings.retrySize,
-    display: "flex",
-    justifyContent: "center",
-    flexDirection:"column",
-    alignItems: "center",
-    marginTop: -gameSettings.retrySize,
-}
-
-export const retryStyle = {
-    width: gameSettings.retrySize,
-    height: gameSettings.retrySize,
+    justifyContent: "space-evenly",
+    alignItems:"stretch",
+    flexDirection: "column",
 }
 
 ////////////////////
 
+export const retryDivStyle = {
+    flex: 9,
+    width: "100%",
+
+    display: "flex",
+    justifyContent: "center",
+    alignItems:"center",
+    flexDirection:"row",
+}
+
+export const statsDivStyle = {
+    flex: 1,
+    width: "100%",
+
+    display: "flex",
+    justifyContent: "center",
+    alignItems:"center",
+    flexDirection:"row",
+}
+
+export const gridDivStyle = {
+    flex: 70,
+    width: "100%",
+    
+    display: "flex",
+    justifyContent: "center",
+    alignItems:"center",
+    flexDirection: "column",
+}
+
+export const bankDivStyle = {
+    flex: 25,
+    width: "100%",
+
+    display: "flex",
+    justifyContent: "center",
+    alignItems:"center",
+    flexDirection:"column",
+}
+
+////////////////
+
+export const gridRowStyle = {
+    flex:1,
+    width: "100%",
+    
+    display: "flex",
+    flexDirection: "row",
+    justifyContent:"center",
+}
+
+export const bankRowStyle = {
+    flex:1,
+
+    display: "flex",
+    flexDirection: "row",
+    justifyContent:"center",
+}
+
+////////////////
+
+export const retryStyle = {
+    height: 30,
+    userSelect: "none",
+}
+
+export const statsStyle = {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection:"row",
+    alignItems: "center",
+    margin: "10px 2px",
+    userSelect: "none",
+}
+
 export const boxStyle = {
-    width:gameSettings.bigBox,
-    height:gameSettings.bigBox,
-    margin:gameSettings.gridSpacing,
+    margin: 3,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "8px",
+    border: "2px solid "+gameSettings.bkgnd,
+    position: "relative",
+} 
+
+export const boxAspectStyle = {
+    height:"100%",
+} 
+
+export const keyStyle = {
+    width:35,
+    margin: 1,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "8px",
     border: "2px solid "+gameSettings.bkgnd,
     textAlign:"center",
-} 
-
-export const keyStyle = {
-    width:gameSettings.smallBoxWidth,
-    height:gameSettings.smallBoxHeight,
-    margin: gameSettings.keyboardSpacing,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "8px",
-    border: "2px solid "+gameSettings.bkgnd,
     userSelect: "none",
-    display: "flex",
-}
-export const specialKeyStyle = {
-    width:gameSettings.smallBoxWidth * 1.5,
-    height:gameSettings.smallBoxHeight,
-    margin: gameSettings.keyboardSpacing,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "8px",
-    border: "2px solid "+gameSettings.bkgnd,
-    userSelect: "none",
-    display: "flex",
+    position: "relative",
 }
 
 ////////////////////
 
-export const wordStyle = {
+export const fontStyleDiv = {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    verticalAlign: "center",
+    textAlign: "center",
     display: "flex",
-    flexDirection: "row",
-    height:gameSettings.bigBox,
     justifyContent: "center",
-    margin: gameSettings.gridSpacing,
+    alignItems:"center",
 }
-
-export const subBankStyle = {
-    display: "flex",
-    flexDirection: "row",
-    height:gameSettings.smallBoxHeight,
-    justifyContent:"center",
-    margin: gameSettings.keyboardSpacing,
-}
-
-////////////////////////
-
-export const gridStyle = {
-    display: "flex",
-    flexDirection: "column",
-}
-
-export const bankStyle = {
-    display: "flex",
-    flexDirection:"column",
-    marginTop:"40px",
-}
-
-////////////////////
 
 export const fontStyle = {
-    textAlign: "center",
+    
     fontSize: "x-large",
     fontWeight: "bold",
     userSelect: "none",
-    top: "50%",
-    transform: "translate(0, -50%)",
     color: gameSettings.bkgnd,
 }
 export const keyFontStyle = {
-    textAlign: "center",
     fontSize: "medium",
+    fontWeight: "bold",
     userSelect: "none",
     top: "60%",
     color: gameSettings.bkgnd,
 }
 
 export const specialKeyFontStyle = {
-    width: "60%",
+    height: "60%",
     margin: "auto",
     display: "block",
 }

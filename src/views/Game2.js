@@ -147,20 +147,20 @@ class Game extends React.Component {
     statText(){
         if (this.state.status == "fail"){
             return(
-            <div style={Styles.statsBox}>
-                <p style={Styles.statsBoxDiv}>The word was </p>
-                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.word.toUpperCase()}</p>
+            <div style={Styles.statsDivStyle}>
+                <p style={Styles.statsStyle}>The word was </p>
+                <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.word.toUpperCase()}</p>
             </div> 
             )
         }
         return(
-            <div style={Styles.statsBox}>
-                <p style={Styles.statsBoxDiv}>Wins </p>
-                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins}</p>
-                <p style={Styles.statsBoxDiv}>Losses </p>
-                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.losses}</p>
-                <p style={Styles.statsBoxDiv}>Average Score </p>
-                <p style={{...Styles.statsBoxDiv, fontWeight: "bold"}}>{this.state.wins == 0 ? 0 : Math.round((this.state.points/this.state.wins) * 100) / 100}</p>
+            <div style={Styles.statsDivStyle}>
+                <p style={Styles.statsStyle}>Wins </p>
+                <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.wins}</p>
+                <p style={Styles.statsStyle}>Losses </p>
+                <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.losses}</p>
+                <p style={Styles.statsStyle}>Average Score </p>
+                <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.wins == 0 ? 0 : Math.round((this.state.points/this.state.wins) * 100) / 100}</p>
             </div> 
         )
     }
@@ -227,11 +227,14 @@ class Game extends React.Component {
         return(
             <div key={"letterbox"+key} style={{
                 ...Styles.boxStyle,
-                backgroundColor:color
+                backgroundColor:color,
                 }}>
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style={Styles.boxAspectStyle}/>
+                <div style={Styles.fontStyleDiv}>
                 <p key={"letter"+key} style={Styles.fontStyle}>
                     {letter ? letter.toUpperCase() : ""}
                 </p>
+                </div>
             </div>
         )
     } 
@@ -251,22 +254,32 @@ class Game extends React.Component {
 
     keyboard (letter,color,key){
         const is_special = (letter=="BK") || (letter=="EN")
-        const special_view =(<img src={(letter=="BK") ? Backspace : Return} style={Styles.specialKeyFontStyle} />)
+        const special_view =(
+            (letter=="BK")
+                ? <img src={Backspace} style={Styles.specialKeyFontStyle}/>
+                : (
+                    (this.state.retryHidden != "visible")
+                    ? <p style={Styles.keyFontStyle}> ENTER </p>
+                    : <img src={Retry} style={Styles.specialKeyFontStyle}/>
+                )
+            )
         const regular_view = <p style={Styles.keyFontStyle}> {letter ? letter.toUpperCase() : ""} </p>
         
         return(
             <div key={"keyboard"+key} onClick={(e) => this.keyStroke(letter, e)} style={{
-                ...(is_special ? Styles.specialKeyStyle : Styles.keyStyle),
+                ...(is_special ? {...Styles.keyStyle,width:Styles.keyStyle.width*1.75} : Styles.keyStyle),
                 backgroundColor:color
                 }}>
-                {is_special ? special_view : regular_view}
+                <div style={Styles.fontStyleDiv}>
+                    {is_special ? special_view : regular_view}
+                </div>
             </div>
         )
     } 
 
     wordbox (word,stylerow,key) {
         return(
-            <div key={"wordbox"+key} style={Styles.wordStyle}>
+            <div key={"wordbox"+key} style={Styles.gridRowStyle}>
                 {Object.entries(word).map((link, index) =>
                     (this.letterbox(word[index],stylerow[index],index)))
                 }
@@ -274,15 +287,6 @@ class Game extends React.Component {
         )
     }
 
-    gridbox (wordgrid,stylegrid) {
-        return (
-            <div style={Styles.gridStyle}>
-                {Object.entries(wordgrid).map((link, index) =>
-                    (this.wordbox(wordgrid[index],stylegrid[index],index)))
-                }
-            </div>
-        )
-    }
 
     handleRetry(){
         this.setState({
@@ -295,29 +299,33 @@ class Game extends React.Component {
 
     render() {
         return (
-            <div>
-            
-
             <div style={Styles.mainDivStyle}>
 
-                <div style={Styles.retryDivStyle} >
+                {/* <div style={Styles.retryDivStyle} >
                     <img src={Retry} onClick={(e) => this.handleRetry(e)} alt="Retry" style={{...Styles.retryStyle, visibility: this.state.retryHidden}} />
-                </div>
+                </div> */}
                 
                 {this.statText()}
+
                 
-                <div>
-                    {this.gridbox(this.state.wordgrid,this.state.stylegrid)}
+                <div style={Styles.gridDivStyle}>
+                    {Object.entries(this.state.wordgrid).map((link, index) =>
+                        (this.wordbox(this.state.wordgrid[index],this.state.stylegrid[index],index)))
+                    }
                 </div>
-                <div style={Styles.bankStyle}>
-                {Object.entries(this.splits).map((key_val, index0) => (
-                    <div key={index0} style={Styles.subBankStyle}>
-                    {Object.entries(key_val[1]).map((link, index) =>
-                        (this.keyboard(link[1],this.state.alphabet[link[1]],index)))}
-                    </div>
-                ))}
+
+                <div style={{flex:3}}/>
+                
+                <div style={Styles.bankDivStyle}>
+                    {Object.entries(this.splits).map((key_val, index0) => (
+                        <div key={index0} style={Styles.bankRowStyle}>
+                        {Object.entries(key_val[1]).map((link, index) =>
+                            (this.keyboard(link[1],this.state.alphabet[link[1]],index)))}
+                        </div>
+                    ))}
                 </div>
-            </div>
+
+                <div style={{flex:3}}/>
             </div>
         )
     }
