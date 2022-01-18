@@ -84,6 +84,10 @@ class Game extends React.Component {
     }
 
     async update_style(guess){
+        this.props.ReactGa.event({
+            category:guess,
+            action:this.state.word
+        })
         if (this.state.wordgrid[this.state.yLoc][this.state.xLoc]=="") return;
         var tempstylegrid = this.state.stylegrid;
         var tempword = this.state.word.split("");
