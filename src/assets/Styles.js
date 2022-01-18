@@ -99,7 +99,9 @@ export const boxStyle = {
     borderRadius: "8px",
     border: "2px solid " + gameSettings.bkgnd,
     position: "relative",
-    width:"9vh"
+    // aspectRatio: "1/1",
+    width:"8vh",
+    height:"8vh"
 } 
 
 export const keyStyle = {
