@@ -42,7 +42,7 @@ export const statsDivStyle = {
 }
 
 export const gridDivStyle = {
-    flex: 70,
+    flex: 50,
     width: "100%",
     
     display: "flex",
@@ -139,7 +139,13 @@ export const fontStyleDiv = {
 // }
 
 export const headerFontStyle = {
-    position: "absolute",
+    verticalAlign: "center",
+    textAlign: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems:"center",
+    margin:"-10%",
+
     fontSize: "x-large",
     fontWeight: "bold",
     userSelect: "none",
