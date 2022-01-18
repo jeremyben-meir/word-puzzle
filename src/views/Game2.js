@@ -1,8 +1,7 @@
 import * as Styles from "../assets/Styles";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Retry from '../images/retry.png';
 import Backspace from '../images/backspace.png';
-import Return from '../images/return.png';
 
 class Game extends React.Component {
     constructor(props){
@@ -34,7 +33,7 @@ class Game extends React.Component {
             this.handleRetry()
         }
     }
-
+    
     originalState(){
         var alphabet = {};
 
@@ -78,9 +77,11 @@ class Game extends React.Component {
 
     componentDidMount(){
         document.addEventListener("keydown", this.detectKeypress, false);
+        document.body.style.overflow = "hidden"
     }
     componentWillUnmount(){
         document.removeEventListener("keydown", this.detectKeypress, false);
+        document.body.style.overflow = "visible"
     }
 
     async update_style(guess){
@@ -155,7 +156,7 @@ class Game extends React.Component {
         }
         return(
             <div style={Styles.statsDivStyle}>
-                <p style={Styles.statsStyle}>Wins </p>
+                <p style={Styles.statsStyle}>Win </p>
                 <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.wins}</p>
                 <p style={Styles.statsStyle}>Losses </p>
                 <p style={{...Styles.statsStyle, fontWeight: "bold"}}>{this.state.losses}</p>
@@ -229,11 +230,10 @@ class Game extends React.Component {
                 ...Styles.boxStyle,
                 backgroundColor:color,
                 }}>
-                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style={Styles.boxAspectStyle}/>
                 <div style={Styles.fontStyleDiv}>
-                <p key={"letter"+key} style={Styles.fontStyle}>
-                    {letter ? letter.toUpperCase() : ""}
-                </p>
+                    <p key={"letter"+key} style={Styles.fontStyle}>
+                        {letter ? letter.toUpperCase() : ""}
+                    </p>
                 </div>
             </div>
         )

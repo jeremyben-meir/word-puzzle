@@ -100,16 +100,13 @@ export const boxStyle = {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "8px",
-    border: "2px solid "+gameSettings.bkgnd,
+    border: "2px solid " + gameSettings.bkgnd,
     position: "relative",
-} 
-
-export const boxAspectStyle = {
-    height:"100%",
+    aspectRatio:"1/1",
 } 
 
 export const keyStyle = {
-    width:35,
+    width:30,
     margin: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -133,6 +130,7 @@ export const fontStyleDiv = {
     display: "flex",
     justifyContent: "center",
     alignItems:"center",
+    width:"100%"
 }
 
 export const fontStyle = {
