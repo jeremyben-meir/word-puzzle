@@ -198,11 +198,11 @@ class Game extends React.Component {
                     const result_state = await this.update_style(word)
                     this.setState(result_state,() => {
                         this.writeState()
-                        return
                     })
                 }
             } 
-        }       
+        }    
+        return
     }
 
     async detectKeypress(event){
@@ -212,9 +212,8 @@ class Game extends React.Component {
     async triggerSelect(keyCode){
         if (this.allowType){
             this.allowType = false
-            this.selectLetter(keyCode).then(
-                this.allowType = true
-            )
+            await this.selectLetter(keyCode)
+            this.allowType = true
         }
     }
 
